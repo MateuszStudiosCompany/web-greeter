@@ -1,9 +1,9 @@
 name: "Build Webgreeter"
 description: "Builds webgreeter"
 inputs:
-  web-greeter-install-dependencies:
+ target-distro:
      required: true
-     description: "Webgreeter dependencies (based on distro)"
+     description: "Target distro"
 runs:
   using: "composite"
   steps:
@@ -28,19 +28,25 @@ runs:
             python3-pip \
             dpkg
     -
-      name: Build and install web-greeter
+      name: Build web-greeter
       shell: bash
       run: make build
     -
+      name: Prepare debian build (common)
+      shell: bash
+      run: |
+        cp -r buid/DEBIAN/ buid/install_root/
+    -
+      name: Prepare debian build (for Debian)
+      shell: bash
+      if: ${{ inputs.target-distro == 'debian' }}
+      run: |
+        sed -i "s/liblightdm-gobject-1-0/liblightdm-gobject-1/g" build/install_root/DEBIAN/control
+    -
       name: Build deb
       shell: bash
-      env:
-        GREETER_INST_DEPS: ${{ inputs.web-greeter-install-dependencies }}
       run: |
         cd build/
-        cp -r DEBIAN/ install_root/
-        echo "$GREETER_INST_DEPS"
-        sed -i "/Depends/c\Depends: $GREETER_INST_DEPS" DEBIAN/control
         dpkg-deb --root-owner-group --build install_root "web-greeter.deb"
         dpkg --info "./web-greeter.deb"
     -
