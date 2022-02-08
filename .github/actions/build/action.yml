@@ -1,7 +1,7 @@
 name: "Build Webgreeter"
 description: "Builds webgreeter"
 inputs:
-  web-greeter-build-dependencies:
+  web-greeter-install-dependencies:
      required: true
      description: "Webgreeter dependencies (based on distro)"
 runs:
@@ -13,8 +13,6 @@ runs:
     -
       name: Install dependencies
       shell: bash
-      env:
-        GREETER_BUILD_DEPS: ${{ inputs.web-greeter-build-dependencies }}
       run: |
           sudo apt update
           sudo apt install \
@@ -36,9 +34,12 @@ runs:
     -
       name: Build deb
       shell: bash
+      env:
+        GREETER_INST_DEPS: ${{ inputs.web-greeter-install-dependencies }}
       run: |
         cd build/
         cp -r DEBIAN/ install_root/
+        sed -i "/Depends/c\Depends: $GREETER_INST_DEPS" control
         dpkg-deb --root-owner-group --build install_root "web-greeter.deb"
         dpkg --info "./web-greeter.deb"
     -
@@ -46,5 +47,5 @@ runs:
       uses: actions/upload-artifact@v2
       with:
         name: deb
-        path: ./build/web-greeter.deb
+        path: ./build/
         retention-days: 5

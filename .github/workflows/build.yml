@@ -13,5 +13,14 @@ jobs:
       name: Build and install web-greeter
       uses: "./.github/actions/build"
       with:
-        distro: ubuntu
-        web-greeter-build-dependencies: foo
+        web-greeter-install-dependencies: |
+          liblightdm-gobject-1-0,
+          liblightdm-gobject-1-dev,
+          python3,
+          python3-gi,
+          python3-pyqt5,
+          pyqt5-dev,
+          libqt5webengine5,
+          python3-pyqt5.qtwebengine,
+          python3-ruamel.yaml,
+          python3-xlib
