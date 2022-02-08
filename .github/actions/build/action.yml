@@ -32,12 +32,12 @@ runs:
       shell: bash
       run: make build
     -
-      name: Prepare debian build (common)
+      name: Prepare deb build (common)
       shell: bash
       run: |
         cp -r build/DEBIAN/ build/install_root/
     -
-      name: Prepare debian build (for Debian)
+      name: Prepare deb build (for Debian)
       shell: bash
       if: ${{ inputs.target-distro == 'debian' }}
       run: |
