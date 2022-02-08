@@ -6,6 +6,9 @@ jobs:
   build-ubuntu:
     runs-on: ubuntu-latest
     steps:
+    - 
+      name: Checkout local actions
+      uses: actions/checkout@v2
     -
       name: Build and install web-greeter
       uses: "./.github/actions/build"
