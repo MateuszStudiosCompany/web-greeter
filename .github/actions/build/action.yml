@@ -39,6 +39,7 @@ runs:
       run: |
         cd build/
         cp -r DEBIAN/ install_root/
+        echo "$GREETER_INST_DEPS"
         sed -i "/Depends/c\Depends: $GREETER_INST_DEPS" control
         dpkg-deb --root-owner-group --build install_root "web-greeter.deb"
         dpkg --info "./web-greeter.deb"
