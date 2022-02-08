@@ -19,6 +19,7 @@ runs:
           sudo apt update
           sudo apt install \
             liblightdm-gobject-1-dev \
+            libgirepository1.0-dev \
             libqt5webengine5 \
             pyqt5-dev-tools \
             python3-gi \
