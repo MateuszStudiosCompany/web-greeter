@@ -46,5 +46,5 @@ runs:
       uses: actions/upload-artifact@v2
       with:
         name: deb
-        path: ./web-greeter.deb
+        path: ./build/web-greeter.deb
         retention-days: 5
