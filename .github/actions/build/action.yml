@@ -32,7 +32,7 @@ runs:
     -
       name: Build and install web-greeter
       shell: bash
-      run: DESTDIR=/tmp make install
+      run: make build
     -
       name: Build deb
       shell: bash
