@@ -1,0 +1,39 @@
+name: "Build Webgreeter"
+description: "Builds webgreeter"
+inputs:
+  web-greeter-build-dependencies:
+     required: true
+     description: "Webgreeter dependencies (based on distro)"
+runs:
+  using: "composite"
+  steps:
+    -
+      name: Checkout
+      uses: actions/checkout@v2
+    -
+      name: Install dependencies
+      env:
+        GREETER_BUILD_DEPS: ${{ inputs.web-greeter-build-dependencies }}
+      run: |
+          sudo apt update
+          sudo apt install \
+            liblightdm-gobject-1-dev \
+            libqt5webengine5 \
+            pyqt5-dev-tools \
+            python3-gi \
+            python3-pyqt5 \
+            python3-ruamel.yaml \
+            python3-pyinotify \
+            python3-xlib \
+            python3-pip \
+            dpkg
+    -
+      name: Build and install web-greeter
+      run: make install
+    -
+      name: Build deb
+      run: |
+        cd build/
+        cp -r DEBIAN/ install_root/
+        dpkg-deb --root-owner-group --build install_root "web-greeter.deb"
+        dpkg --info "./web-greeter.deb"
