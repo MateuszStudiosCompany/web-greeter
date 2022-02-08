@@ -41,3 +41,10 @@ runs:
         cp -r DEBIAN/ install_root/
         dpkg-deb --root-owner-group --build install_root "web-greeter.deb"
         dpkg --info "./web-greeter.deb"
+    -
+      name: 'Upload Artifact'
+      uses: actions/upload-artifact@v2
+      with:
+        name: deb
+        path: ./web-greeter.deb
+        retention-days: 5
